@@ -1,11 +1,15 @@
 # DOSBox for Docker Server
 
+Any feedback and ideas are higly appreciated! :)
+
 This image can be used standalone, or as a base for other images.
 
 It provides a DOSBox environment and a VNC console for it, running on
 port 5901.
 
 # Install and run
+
+Image avaailable and keep updated on REPO https://hub.docker.com/r/shrizt/dosbox
 
 You can install with:
 
