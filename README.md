@@ -1,11 +1,19 @@
 # DOSBox for Docker Server
 
+Any feedback and ideas are higly appreciated! :)
+
 This image can be used standalone, or as a base for other images.
 
 It provides a DOSBox environment and a VNC console for it, running on
 port 5901.
 
+   | Warning! DosBox default settings "cycles=auto" in dosbox.conf file make one CPU core fully utilized by emulator even container is not used.<br>
+   | Most of DOS apps/games run fine with "cycles=5000 to cycles=20000" which will make your CPU more relaxed.<br>
+   | * An idea for future release: adjust CPU cycles on connection/disconnection to VNC.<br>
+
 # Install and run
+
+Image avaailable and keep updated on REPO https://hub.docker.com/r/shrizt/dosbox
 
 You can install with:
 
