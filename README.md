@@ -59,12 +59,12 @@ then the command `dosboxconsole` should get one for you.
 You may put commands to execute on start up at the end of /config/dosbox.conf file.
 Setting fullscreen=1 will launch DosBox as kiosk.
 
-# Source
+# Source / Ext links
 
-Container reworked from docker-bbs set by John Goerzen <jgoerzen@complete.org> 
+Container forked from docker-bbs set by John Goerzen <jgoerzen@complete.org> 
 (https://github.com/jgoerzen/docker-bbs/tree/master/dosbox)
 
 Some logging and startup procedures improved, configuration made to be managed externaly with ease.
 New source now here: https://github.com/Shrizt/docker-dosbox
 
-
+Using DosBox inside: https://www.dosbox.com/
