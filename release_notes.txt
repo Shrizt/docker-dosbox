@@ -1,0 +1,15 @@
+#2022-11-08
+- Added this file release_notes.txt
+- Fixed error restarting container by adding clean-up for /tmp files 
+- Get rid of supervisord, all startup moved to start.sh script (-30MB and more clear run)
+- Logging cleaned up and more informative
+#Ideas for the next release:
+- Fix sound issues if possible
+- DosBox CPU cycles change on VNC connect/disconnect
+- Check on better base linux image
+
+#2022-10-30
+- Created fork
+- Initial fork re-work 
+- Added mounted config / drive_d 
+- ENV vars for control
