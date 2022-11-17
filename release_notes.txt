@@ -4,7 +4,6 @@
 - Improved dosbox.conf usage, now no need to restart container to update config, just restart dosbox
 - Added cycles=25000 to default dosbox.conf to limit CPU usage
 - reduced number of drives mounted to dosbox (c,d,y)
-- added autoexec.bat run from external volume /config/drive_d (D:) to launch DOS apps on container start
 - *DosBox auto-sleep* feature! set DOSBOXSLEEP=1 ENV VAR to enable DosBox sleep when VNC client disconnected and resume on VNC connect!
 - d:\start.bat in drive_d share can be used to launch DOS apps on container startup
 
