@@ -1,17 +1,22 @@
-# DOSBox for Docker Server
-
-2022-11-17 New push highlights:
-- new debian-buster-slim base
-- new DosBox auto-sleep feature (read below)
-...more in release_notes on GitHub
-
-Any feedback and ideas are highly appreciated and welcome to shrizt(9)gmail.c0m! :)
+## DOSBox for Docker Server
 
 This image provides a DOSBox environment and a VNC console for it, running on
 port 5901 (no local X needed - fully virtual desktop).
 
-# Super feature added
-Now you may set ENV VAR DOSBOXSLEEP=1 - and DosBox will automatically go to sleep mode when VNC session disconnected and come back to live on connection. This really helps if you need to run few DosBox containers and will save you a lot of CPU usage/power.
+# 2024-12-12 New push highlights:
+- added autorun.sh to /config mounted dir, so you may easy add start-up commands, file will be created and +x if not exists on launch
+- DosBox launch script added to infinite loop, so if your DOS game/app is halted - just press CTRL-F9 to close DosBox - it will restart promptly
+- below added compose stack config example to run few DosBox hosts for network games
+...more in release_notes on GitHub
+
+Any feedback and ideas are highly appreciated and welcome to shrizt(9)gmail.c0m! :)
+
+# Tags
+* :latest - latest with no sound support (smaller, may be more stable for some DOS apps)
+* :pa - with sound (pulseaudio) support - including wav and midi devices
+
+# AUTOSLEEP feature 
+You may set ENV VAR AUTOSLEEP=1 - and DosBox and pulseaudio will automatically go to sleep mode when VNC session disconnected and come back to live on connection. This really helps if you need to run few DosBox containers and will save you a lot of CPU/power usage.
 Sleep/Restore logged in stdout.
 
 # Install and run
@@ -68,9 +73,83 @@ child images may alter these defaults.
 You may put commands to execute on start up at the end of /config/dosbox.conf file.
 Setting fullscreen=1 will launch DosBox as kiosk.
 
+# Network compose (few hosts example)
+
+Check you have a bridge network with name my-bridge and ip addresses in range (or correct below)
+```
+---
+version: "3.4"
+
+x-common-variables: &common-variables
+      PUID: 1002
+      PGID: 100
+      TZ: Europe/Moscow
+      VNCPASSWORD: 12345678
+      VNCGEOMETRY: 640x480
+      VNCDEPTH: 16
+      AUTOSLEEP: 0 #for stable networking both hosts may sleep simultaneously only, I use separate script for it
+      VNCPORT: 5901
+
+x-common-keys-core: &common-keys
+  #image: shrizt/dosbox:pa
+  image: shrizt/dosbox:latest
+  security_opt:
+    - no-new-privileges:true
+  restart: unless-stopped
+
+networks:
+  my-bridge:
+    external: true
+
+     
+services:
+  dosnet1:
+    <<: *common-keys
+    container_name: dosnet1
+    hostname: dosnet1
+    healthcheck:
+      test: ["CMD", "pgrep", "dosbox"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    environment:
+      <<: *common-variables            
+      SOME_CUSTOM_VAR: 2
+    volumes:
+      - /path/on/host/dosnet1:/config
+    networks:
+     my-bridge:
+      ipv4_address: 172.21.0.231
+
+  dosnet2:
+    <<: *common-keys    
+    container_name: dosnet2
+    hostname: dosnet2
+    depends_on: #start this host after 1, so ipxnet server started first
+      dosnet1:
+        condition: service_healthy
+    environment:
+      <<: *common-variables    
+      SOME_CUSTOM_VAR: 1
+    volumes:
+      - /path/on/host/dosnet2:/config
+    networks:
+     my-bridge:
+      ipv4_address: 172.21.0.232
+```
+
+First host should execute (you may add it to /config/dosbox.conf)
+>ipxnet startserver
+
+Other hosts must exec
+>ipxnet connect dosnet1
+
+Have a happy networking!
+
 # Source / Ext links
 
-Some logging and startup procedures improved, configuration made to be managed externaly with ease.
+Some logging and startup procedures improved, configuration made to be managed externally with ease.
 New source now here: https://github.com/Shrizt/docker-dosbox
 
 Using DosBox inside: https://www.dosbox.com/

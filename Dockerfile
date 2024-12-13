@@ -7,9 +7,8 @@ RUN sed -i 's/main/main contrib/g' /etc/apt/sources.list && \
             lwm xterm procps curl ca-certificates \
             zip unzip nano pwgen inotify-tools && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-COPY startvnc.sh /usr/local/bin/
 
-COPY start.sh /usr/local/bin/
+COPY start.sh startdosbox.sh startvnc.sh /usr/local/bin/
 
 COPY stopcont.sh cont.sh stop.sh /usr/local/bin/
 

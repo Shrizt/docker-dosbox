@@ -18,12 +18,15 @@ echo "starting vnc script..."
 
 echo "Creating /config/drive_d if not exist to mount into DOSBOX"
 #make drive_d dir if not exist
-LOGDIR=/config/log
+export LOGDIR=/config/log
 mkdir -p /config/drive_d
 mkdir -p $LOGDIR
+#create and +x autorun.sh file in config dir if not exist
+touch /config/autorun.sh
+chmod +x /config/autorun.sh 
 
 
-DOSBOXCFG=/config/dosbox.conf
+export DOSBOXCFG=/config/dosbox.conf
 if [ -f "$DOSBOXCFG" ]; then
     echo "Using $DOSBOXCFG. If you need to load defaults - remove $DOSBOXCFG"
 else 
@@ -44,8 +47,10 @@ fi
 
 echo "Starting /usr/bin/xterm &"
 /usr/bin/xterm &
-echo "Starting dosbox... >/usr/bin/dosbox -conf $DOSBOXCFG &"
-/usr/bin/dosbox -conf $DOSBOXCFG &>$LOGDIR/dosbox.log &
+echo "Executing startdosbox.sh..."
+/usr/local/bin/startdosbox.sh &
+echo "Executing /config/autorun.sh script..."
+/config/autorun.sh &
 echo "### Start-up finished. VNC connections watcher start"
 /usr/local/bin/stopcont.sh
 

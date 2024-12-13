@@ -21,6 +21,9 @@ echo "d:\start.bat" >> /dos/dosbox.conf
 sed -i 's/usescancodes=true/usescancodes=false/' /dos/dosbox.conf
 # Limit cycles to 25000 to reduce CPU utilization
 sed -i 's/cycles=auto/cycles=25000/' /dos/dosbox.conf
+# ipxnet enable
+sed -i 's/ipx=false/ipx=true/' /dos/dosbox.conf
+
 
 # Convenience aliases
 cd /usr/local/bin
